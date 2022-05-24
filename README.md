@@ -1,6 +1,6 @@
 # langmangler
 
-> Create words in a fictional language by transforming words from a real language.
+> Create words in a fictional language by transforming words from a real language
 
 Langmangler takes a list of strings and transforms them according to a supplied list of simple rules. It was designed to produce passably consistent large sets of fictional names of people and places with the least amount of effort, leveraging existing data.
 
@@ -8,6 +8,8 @@ Langmangler takes a list of strings and transforms them according to a supplied 
 `Yamagata Fukushima Saitama` + [`example-japanese-rules.txt`](#rules-file-format)<br>
 **Example output:**<br>
 `Limegite Efoququema Sliītime`
+
+This program was created for [Monmonde](https://github.com/fauu/Monmonde/). That project’s repository contains [more example outputs](https://github.com/fauu/Monmonde/tree/master/sim/data/names) of langmangler (human names from fictional countries).
 
 ## Table of contents
 
