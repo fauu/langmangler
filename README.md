@@ -51,8 +51,8 @@ FLAGS:
     -V, --version    Prints version information
 
 OPTIONS:
-    -x, --reject <reject>    Rejects transformed strings that pass a specified check against the original [possible
-                             values: Unchanged, AsciiUnchanged]
+    -x, --reject <reject>    Compare outputs with inputs and reject those that pass the specified
+                             check [possible values: Unchanged, AsciiUnchanged]
     -r, --rules <rules>      Path to the rules file
 ```
 

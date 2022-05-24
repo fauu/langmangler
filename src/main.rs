@@ -35,9 +35,7 @@ fn main() {
                 .takes_value(true)
                 .possible_values(&ResultRejectionCriterion::variants())
                 .case_insensitive(true)
-                .help(
-                    "Rejects transformed strings that pass a specified check against the original",
-                ),
+                .help("Compare outputs with inputs and reject those that pass the specified check"),
         )
         .arg(
             Arg::with_name("print-original")
