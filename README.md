@@ -11,27 +11,29 @@ Langmangler takes a list of strings and transforms them according to a supplied 
 
 ## Table of contents
 
-- [Building](#building)
+- [Getting started](#getting-started)
 - [Usage](#usage)
 - [Rules file format](#rules-file-format)
 - [License](#license)
 
-## Building
+## Getting started
 
-Requirements:
+#### Requirements
 
 - Rust stable
 
-Run:
+#### Option 1. Direct installation
 
 ```
 $ cargo install --git "https://github.com/fauu/langmangler"
 ```
 
-or simply build and run the program with a single command, without installing it, from within the cloned repository directory:
+#### Option 2. Clone and run
 
 ```
-$ cargo run --
+$ git clone "https://github.com/fauu/langmangler"
+$ cd langmangler
+$ cargo run -- [program parameters]
 ```
 
 ## Usage
@@ -68,7 +70,7 @@ Sliītime (Saitama)
 
 ## Rules file format
 
-Below are the contents of the [example rules file](/examples/example-japanese-rules.txt), targeted at the Japanese language:
+Below are the contents of the [example rules file](/examples/example-japanese-rules.txt), designed for Japanese input:
 
 ```
 @ReturningNonSegmentedRegex
@@ -114,21 +116,21 @@ ai/ia
 ii/iī
 ```
 
-The headings starting with the `@` character determine the transformation passes that each of the input strings will undergo. Under the headings there are transformation rules consisting of two segments divided by a `/` character: (1) what is transformed, (2) into what. A space character signifies a space character, no character signifies an empty string. Lastly, you can write comments starting with `#` that will be ignored by the program.
+The headings, starting with the `@` character, each define one transformation pass that each of the input strings undergoes. Under the headings, there are transformation rules consisting of two segments separated by a `/` character, which determine, in order: 1) what is transformed, 2) into what. A space character is understood literally; zero characters means an empty string. Comments, starting with `#`, are ignored by the program.
 
 The names in the pass headings refer to the kinds of transformation passes the program can perform. Those are:
 
 ### `ReturningNonSegmentedRegex`
 
-For every input string execute a regex replace for each specified rule.
+For every input string execute one regex replace per specified rule.
 
 ### `ReturningSegmentedRegex`
 
-The same as above, except split the input string further into segments by space and dash characters and then re-combine it after executing each rule on each segment separately.
+Like above, except split the input string into segments by ` ` and `-` characters, execute each rule on each segment separately, and finally recombine the string.
 
 ### `NonReturningNonSegmentedSimple`
 
-Execute a simple, i.e. non-Regex substitution. In contrast with the `Returning` passes, the `NonReturning` pass does not execute each rule on the entire string, but, after matching a rule, advances the cursor for all the subsequent rules in the same pass. Moreover, `Simple` rules are case-insensitive: the transformer will try to preserve the original casing.
+A non-Regex substitution that, in contrast to the `Returning` passes, instead of executing each rule on the entire string, after matching a rule advances the cursor for all the subsequent rules in the same pass. `Simple` rules are, moreover, case-insensitive. The transformer will try to preserve the original casing.
 
 ## License
 
