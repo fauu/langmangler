@@ -4,10 +4,10 @@ use std::{
     str::FromStr,
 };
 
-use clap::{arg_enum, value_t, App, Arg};
+use clap::{arg_enum, value_t, Arg};
 use deunicode::deunicode;
 use itertools::{EitherOrBoth::*, Itertools};
-use once_cell::{sync::Lazy, sync_lazy};
+use once_cell_regex::regex;
 use regex::Regex;
 
 arg_enum! {
@@ -18,11 +18,13 @@ arg_enum! {
     }
 }
 
+const APP_NAME: &str = "langmangler";
+
 fn main() {
-    let args = App::new("langmangler")
+    let args = clap::App::new(APP_NAME)
         .arg(
             Arg::with_name("rules")
-                .short("r")
+                .short('r')
                 .long("rules")
                 .takes_value(true)
                 .required(true)
@@ -30,7 +32,7 @@ fn main() {
         )
         .arg(
             Arg::with_name("reject")
-                .short("x")
+                .short('x')
                 .long("reject")
                 .takes_value(true)
                 .possible_values(&ResultRejectionCriterion::variants())
@@ -39,7 +41,7 @@ fn main() {
         )
         .arg(
             Arg::with_name("print-original")
-                .short("o")
+                .short('o')
                 .long("compare")
                 .takes_value(false)
                 .help("Prints original strings for comparison"),
@@ -83,15 +85,11 @@ fn main() {
     }
 }
 
-static RULE_COMMENT_RE: Lazy<Regex> = sync_lazy! {
-    Regex::new("#.*").unwrap()
-};
-
 fn parse_rules(filepath: &str) -> Vec<TransformPass> {
     let preprocessed_lines: Vec<String> = fs::read_to_string(filepath)
         .unwrap()
         .split('\n')
-        .map(|line| RULE_COMMENT_RE.replace_all(line, ""))
+        .map(|line| regex!("#.*").replace_all(line, ""))
         .map(|line| line.trim().to_owned())
         .filter(|line| !line.is_empty())
         .collect();
@@ -325,7 +323,7 @@ impl<T: TransformRule> TransformPassImpl<T> {
     }
 }
 
-static SEG_DELIMS: [char; 2] = [' ', '-'];
+const SEG_DELIMS: [char; 2] = [' ', '-'];
 
 fn segmentize(str: &str) -> (Vec<String>, Vec<char>) {
     let mut segs = Vec::<String>::new();
